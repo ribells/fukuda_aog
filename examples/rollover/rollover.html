@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<title>Rollover Fade Method</title>
+<style type="text/css" media="screen">
+<!--
+body { margin: 10px; padding: 0; font: 1em "Trebuchet MS", verdana, arial, sans-serif; font-size: 100%; }
+h1 { margin-bottom: 2px; }
+img { width: 200px; }
+-->
+</style>
+  
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript">
+  <!--
+    
+    // wrap as a jQuery plugin and pass jQuery in to our anonymous function
+    (function ($) {
+           $.fn.cross = function (options) {
+               return this.each(function (i) { 
+                   // cache the copy of jQuery(this) - the start image
+                   var $$ = $(this);
+  
+                   // get the target from the backgroundImage + regexp
+                   var target = $$.css('backgroundImage').replace(/^url|[\(\)'"]/g, '');
+
+                   // nice long chain: wrap img element in span
+                   $$.wrap('<span style="position: relative;"></span>')
+                   // change selector to parent - i.e. newly created span
+                   .parent()
+                   // prepend a new image inside the span
+                   .prepend('<img>')
+                   // change the selector to the newly created image
+                   .find(':first-child')
+                   // set the image to the target
+                   .attr('src', target);
+  
+				   $$.css({
+					  'position' : 'absolute', 
+					  'left' : 0,
+					  'background' : '',
+					  'top' : this.offsetTop
+				   });
+  
+				   // similar effect as single image technique, except using .animate 
+				   // which will handle the fading up from the right opacity for us
+				   $$.hover(function () {  
+					  $$.stop().animate({
+						 opacity: 0
+					  }, 500);
+				   }, function () {
+					  $$.stop().animate({
+						 opacity: 1
+					  }, 500);
+				   });
+             });
+        };
+  
+    })(jQuery);
+  
+    // note that this uses the .bind('load') on the window object, rather than $(document).ready() 
+    // because .ready() fires before the images have loaded, but we need to fire *after* because
+    // our code relies on the dimensions of the images already in place.
+    $(window).bind('load', function () {
+         $('img.fade').cross();
+    });
+  
+  //-->
+  </script>
+  </head>
+  <body>
+  <h1>Rollover Fade Method - Single Image Technique</h1>
+  <p>This technique uses jQuery to animate a fade transition.</p>
+  <div>
+  <a href="#">
+    <img class="fade" src="images/mona.png" style="background: url(images/fukuda.png);" alt="Who we are" />
+  </a>
+  <a href="#">
+  	<img class="fade" src="images/fukuda.png" style="background: url(images/mona.png);" alt="Who we are" />
+  </a>
+  </div>
+  </body>
+  </html>
