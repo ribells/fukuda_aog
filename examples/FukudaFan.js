@@ -168,13 +168,12 @@ function draw() {
 				length[2] = length[3];
 				length[3] = length[4];
 				length[4] = intensity/9/785;  // divide by size of neighborhood (9) and maximum intensity per pixel (3x255)
-											  // original code had (5x255), why ???
-			  
+
 				// Use intensity as a measure for the strip width, clamp to min/max strip width
 				if(length[4]>pct_max/100) length[4]=pct_max/100;
 				if(length[4]<pct_min/100) length[4]=pct_min/100;
 
-				avg_length = (length[0]+length[1]+length[2])/3;  // ??? why use length[0..2] and not length[0..4] ???
+				avg_length = (length[0]+length[1]+length[2]+length[3]+length[4])/5;
 			}
 		  
 			if(!solid_color) stroke(mona[index],mona[index+1],mona[index+2]);  // optionally, use anchor's original color for this point of the strip
