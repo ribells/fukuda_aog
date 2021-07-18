@@ -11,7 +11,6 @@
 // For clarity, various parameters are hardcoded, including
 // - image name and image dimensions
 // - the fan location, centered at the center of the image's bottom edge.
-// - the number of strips in the fan
 // - minimum and maximum percentage of the strip's width that can be filled
 // 
 // Compared to Figures 2+3 in the published paper this code uses a simplified traversal for computing the modulated width of a strip.
@@ -23,7 +22,7 @@
 // -----------------------------------------------------------------------------------------------------------------
 // Hardcoded, global parameters
 let    img;
-let    num_strips  = 50;
+let    num_strips  = 5;
 let    img_w       = 515;
 let    img_h       = 768;
 let    angle_start = -90;
@@ -81,7 +80,8 @@ function FukudaFan() {
 	// Define global parameters used by draw() function
     start_angle = deg2rad(angle_start);
     end_angle   = deg2rad(angle_end);
-    angle_inc   = (end_angle - start_angle) / num_strips;
+	num_strips_change= +1;
+
     
     img_w = img.width;
     img_h = img.height;
@@ -95,24 +95,13 @@ function FukudaFan() {
     strokeWeight(2);              // strips are drawin with 2 pixels lines
 }
 
-// -----------------------------------------------------------------------------------------------------------------
-// P5 global entry points
-
-function preload() {
-    img = loadImage(bimage);
-}
-
-function setup() {
-    const canvas = createCanvas(img_w, img_h)
-    FukudaFan();
-}
-
-function draw() {  
+function draw_fukuda() {  
     // Clear the entire canvas before drawing the fan strips
     fill(255, 255, 220);
     rect(0, 0, img_w, img_h);
 
     // Iterate through all strips in the fan
+	angle_inc   = (end_angle - start_angle) / num_strips;
     for(angle=start_angle; angle<=end_angle; angle+=angle_inc) {
         // Compute the "direction" of the current strip's centerline
         // and the "spread", i.e. a vector perpendicular to the centerline
@@ -189,6 +178,25 @@ function draw() {
             y += direction[1]*step_size;
 		}
     }
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+// P5 global entry points
+
+function preload() {
+    img = loadImage(bimage);
+}
+
+function setup() {
+    const canvas = createCanvas(img_w, img_h)
+    FukudaFan();
+}
+
+function draw() {
+    if (num_strips > 50) num_strips_change *= -1;
+	if (num_strips <  5) num_strips_change *= -1;
+	num_strips += num_strips_change;
+	draw_fukuda();
 }
 
 function mousePressed() {
