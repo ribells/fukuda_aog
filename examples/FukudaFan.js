@@ -18,11 +18,13 @@
 // it simply computes the average of a nine-pixel neighborhood around the current anchor point.
 // The results of this procedure closely resemble the images created by the more sophisticated procedure described in the paper.
 //
+// Simple animation effects can be enabled by global variables "evolve", "breathe" or "unfurl".
+//
 
 // -----------------------------------------------------------------------------------------------------------------
 // Hardcoded, global parameters
 let    img;
-let    num_strips  = 5;
+let    num_strips  = 50;
 let    img_w       = 515;
 let    img_h       = 768;
 let    angle_start = -90;
@@ -31,6 +33,9 @@ let    step_size   = 1.0;
 let    pct_min     = 10;
 let    pct_max     = 100;
 let    solid_color = true;
+let    evolve      = false;		// animation varying strip-width, creating effect of an evolving image, see Figure 6
+let    breathe     = false;		// animation varying modulation, creating effecting of "breathing" image, see Figure 7
+let    unfurl      = false;		// animation varying fan's end angle, creating effect of "unfurling" image, see Figure 8
 let    bimage      = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/515px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -78,10 +83,9 @@ function get_stripwidth (x,y, u,v)
 
 function FukudaFan() {
 	// Define global parameters used by draw() function
-    start_angle = deg2rad(angle_start);
-    end_angle   = deg2rad(angle_end);
 	num_strips_change= +1;
-
+    pct_change = +5;
+	angle_change = +5;
     
     img_w = img.width;
     img_h = img.height;
@@ -101,6 +105,8 @@ function draw_fukuda() {
     rect(0, 0, img_w, img_h);
 
     // Iterate through all strips in the fan
+    start_angle = deg2rad(angle_start);
+    end_angle   = deg2rad(angle_end);
 	angle_inc   = (end_angle - start_angle) / num_strips;
     for(angle=start_angle; angle<=end_angle; angle+=angle_inc) {
         // Compute the "direction" of the current strip's centerline
@@ -193,9 +199,25 @@ function setup() {
 }
 
 function draw() {
-    if (num_strips > 50) num_strips_change *= -1;
-	if (num_strips <  5) num_strips_change *= -1;
-	num_strips += num_strips_change;
+	
+	if (evolve) {
+        if (num_strips > 50) num_strips_change = -1;
+	    if (num_strips <  5) num_strips_change = +1;
+	    num_strips += num_strips_change;
+	}
+	
+	if (breathe) {
+		if (pct_max > 90)      pct_change = -5;
+		if (pct_max < pct_min) pct_change = +5;
+		pct_max += pct_change;
+	}
+	
+	if (unfurl) {
+		if (angle_end >  90) angle_change = -5;
+		if (angle_end < -80) angle_change = +5;
+		angle_end += angle_change;
+	}
+	
 	draw_fukuda();
 }
 
