@@ -14,10 +14,59 @@
             font-family: Arial, Helvetica, sans-serif;
         }
     </style>
+    <script>
+		function useStatic() {
+			evolve = false;
+			breathe = false;
+			unfurl = false;
+			FukudaFan();
+		}
+		function useEvolve() {
+			evolve = true;
+			breathe = false;
+			unfurl = false;
+			FukudaFan();
+		}
+		function useBreathe() {
+			evolve = false;
+			breathe = true;
+			unfurl = false;
+			FukudaFan();
+		}
+		function useUnfurl() {
+			evolve = false;
+			breathe = false;
+			unfurl = true;
+			FukudaFan();
+		}
+		function useSolid() {
+			solid_color = true;
+			FukudaFan();
+		}
+		function useImage() {
+			solid_color = false;
+			FukudaFan();
+		}
+    </script>
 </head>
 
 <body>
     <h1>Fukuda Fan Style</h1>
-    <div id="sketch-holder"></div> <!-- <<< p5 sketch goes here -->
+    <div>
+    	<div>
+    		<select>
+    			<option onclick="useStatic();">No Animation</option>
+    			<option onclick="useEvolve();">Evolve (Figure 6)</option>
+    			<option onclick="useBreathe();">Breathe (Figure 7)</option>
+    			<option onclick="useUnfurl();">Unfurl (Figure 8)</option>
+    		</select>
+    		<select>
+    			<option onclick="useSolid();">Solid Color</option>
+    			<option onclick="useImage();">Multicolor</option>
+    		</select>
+    	</div>
+    	<br/><br/>
+    	<div id="sketch-holder"></div> <!-- <<< p5 sketch goes here -->
+	</div>
 </body>
 </html>
