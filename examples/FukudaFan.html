@@ -16,27 +16,41 @@
     </style>
     <script>
 		function useStatic() {
-			evolve = false;
-			breathe = false;
-			unfurl = false;
+			if(document.getElementById("cb1").checked) {
+				document.getElementById("cb2").checked = false;
+				document.getElementById("cb3").checked = false;
+				document.getElementById("cb4").checked = false;
+				evolve = false;
+				breathe = false;
+				unfurl = false;
+			}
 			FukudaFan();
 		}
 		function useEvolve() {
-			evolve = true;
-			breathe = false;
-			unfurl = false;
+			if(document.getElementById("cb2").checked) {
+				document.getElementById("cb1").checked = false;
+				evolve = true;
+			} else {
+				evolve = false;
+			}
 			FukudaFan();
 		}
 		function useBreathe() {
-			evolve = false;
-			breathe = true;
-			unfurl = false;
+			if(document.getElementById("cb3").checked) {
+				document.getElementById("cb1").checked = false;
+				breathe = true;
+			} else {
+				breathe = false;
+			}
 			FukudaFan();
 		}
 		function useUnfurl() {
-			evolve = false;
-			breathe = false;
-			unfurl = true;
+			if(document.getElementById("cb4").checked) {
+				document.getElementById("cb1").checked = false;
+				unfurl = true;
+			} else {
+				unfurl = false;
+			}
 			FukudaFan();
 		}
 		function useSolid() {
@@ -54,19 +68,23 @@
     <h1>Fukuda Fan Style</h1>
     <div>
     	<div>
-    		<select>
-    			<option onclick="useStatic();">No Animation</option>
-    			<option onclick="useEvolve();">Evolve (Figure 6)</option>
-    			<option onclick="useBreathe();">Breathe (Figure 7)</option>
-    			<option onclick="useUnfurl();">Unfurl (Figure 8)</option>
-    		</select>
-    		<select>
-    			<option onclick="useSolid();">Solid Color</option>
-    			<option onclick="useImage();">Multicolor</option>
-    		</select>
+			<input type="checkbox" id="cb1" onclick="useStatic();" /> No Animation 
+			<input type="checkbox" id="cb2" onclick="useEvolve();" /> Evolve (Figure 6) 
+			<input type="checkbox" id="cb3" onclick="useBreathe();" /> Breathe (Figure 7) 
+			<input type="checkbox" id="cb4" onclick="useUnfurl();" />  Unfurl (Figure 8)
+    		<br/>
+    		<input type="radio" name="color" id="solid" onclick="useSolid();" /> Solid Color</option>
+    		<input type="radio" name="color" id="mult" onclick="useImage();" /> Multicolor</option>
     	</div>
     	<br/><br/>
     	<div id="sketch-holder"></div> <!-- <<< p5 sketch goes here -->
 	</div>
+	<script>
+		document.getElementById("cb1").checked = true;
+		document.getElementById("cb2").checked = false;
+		document.getElementById("cb3").checked = false;
+		document.getElementById("cb4").checked = false;
+		document.getElementById("solid").checked = true;
+	</script>
 </body>
 </html>
